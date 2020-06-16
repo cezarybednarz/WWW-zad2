@@ -1,0 +1,150 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>Quiz trwa</title> 
+    <!-- Bulma Version 0.8.x-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"> 
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+</head> 
+  
+<body> 
+    <!-- QUIZ CONTENT -->
+    <div class="container">
+        <div class="columns">
+            <!-- FIRST COLUMN -->
+            <div class="column is-6">
+                <section class="hero is-info welcome is-small">
+                    <div class="hero-body">
+                        <div class="container">
+                            <h1 class="title" id="quiz-name">
+                            </h1>
+                            <h2 class="subtitle">
+                                Wpisz liczbę całkowitą równą wynikowi zadania. Musisz oddać odpowiedź w każdym pytaniu aby zakończyć quiz.
+                            </h2>
+                            <h3 class="content" id="penalty-info">
+                                kara za niepoprawną odpowiedź: 4 s
+                            </h3>
+                        </div>
+                    </div>
+                </section>    
+
+                <div>
+                    <progress class="progress is-success" id="progress-bar" value="60" max="100"></progress>
+                </div>
+
+                <div class="columns">
+                    <div class="column">
+                        <div class="card events-card">
+                            <header class="card-header">
+                                <p class="card-header-title" id="question-name">
+                                    Pytanie 1
+                                </p>
+                            </header>
+                            <div class="card-content" id="question">
+                                Pytanie nie jest załadowane.
+                            </div>
+                            <!-- ANSWER BOX -->
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input is-primary" id="answer-box" type="text" placeholder="liczba całkowita"></input>
+                                </div>
+                            </div>
+                            <!-- NAVIGATION BUTTONS -->
+                            <div class="columns">
+                                <div class="column is-quarter">
+                                    <a class="button is-small is-fullwidth is-info" id="button-prev">poprzednie</a>
+                                </div>
+                                <div class="column is-half"></div>
+                                <div class="column is-quarter">
+                                    <a class="button is-small is-fullwidth is-info" id="button-next">kolejne</a>
+                                </div>
+                            </div>
+                            <div class="card-table">
+                                <div class="content">
+                                    <table class="table is-fullwidth is-striped">
+                                        <tbody id="question-list">
+                                            <!-- insert table from json -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- SECOND COLUMN -->
+            <div class="column is-2">
+                <div class="tile is-ancestor">
+                    <div class="tile is-parent is-vertical">
+                        <article class="tile is-child notification is-info box">
+                            <p class="title" id="timer">0 s</cp>
+                            <p class="subtitle">Czas</p>
+                        </article>
+                        <article class="tile is-child notification is-success box">
+                            <p class="title" id="completed-tasks">4/5</p>
+                            <p class="subtitle">Wypełnione</p>
+                            <div class="field is-grouped">
+                                <p class="control">
+                                    <button class="button is-warning is-light" id="button-finish">
+                                        Zakończ
+                                    </button>
+                                </p>
+                                <button class="button is-danger" id="button-cancel-1">
+                                    Anuluj
+                                </button>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUIZ SUMMARY -->
+    <div class="modal" id="quiz-summary">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Wynik quizu</p>
+            </header>
+            <!-- RESULT TABLE -->
+            <section class="modal-card-body">
+                <div class="container">
+                    <table class="table">
+                       <thead>
+                          <tr>
+                             <th>Pytanie</th>
+                             <th>Twój wynik</th>
+                             <th>Poprawny wynik</th>
+                             <th>Czas</th>
+                             <th>Kara</th>
+                          </tr>
+                       </thead>
+                       <tbody id="result-table">
+                          <!-- RESULTS -->
+                       </tbody>
+                    </table>
+                 </div>
+                 <div class="content" id="total-result">
+                    <!-- TIME RESULTS -->
+                 </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success" id="button-save" href="index.html">
+                    Zapisz wynik
+                </button>
+                <button class="button" id="button-cancel-2">
+                    Wyjdź bez zapisywania
+                </button>
+            </footer>
+        </div>
+      </div>
+
+    <!-- SCRIPT -->
+    <script type="module" src="quiz.js"></script>
+    <!-- END SCRIPT -->
+</body> 
+  
+</html> 

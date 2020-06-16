@@ -1,0 +1,87 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>Quiz</title> 
+    <!-- Bulma Version 0.8.x-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"> 
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+</head> 
+  
+<body> 
+    <div class="container">
+        <div class="columns">
+            <div class="column is-6">
+                <section class="hero is-info welcome is-small">
+                    <div class="hero-body">
+                        <div class="container">
+                            <h1 class="title">
+                                Arytmetyczne quizy XDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+                            </h1>
+                            <h2 class="subtitle">
+                                Zacznij jeden z quizów klikając przycisk start
+                            </h2>
+                        </div>
+                    </div>
+                </section>
+                <div class="columns">
+                    <div class="column">
+                        <div class="card events-card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Dostępne quizy
+                                </p>
+                            </header>
+                            <div class="card-table">
+                                <div class="content">
+                                    <table class="table is-fullwidth is-striped">
+                                        <tbody id="question-list">
+                                            <!-- insert table from json -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class="info-tiles">
+                    <div class="tile is-ancestor has-text-centered">
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title" id="stat-solved">0</p>
+                                <p class="subtitle">Rozwiązanych testów</p>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title" id="stat-correct">0%</p>
+                                <p class="subtitle">Poprawnych odpowiedzi</p>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title" id="stat-avg">0</p>
+                                <p class="subtitle">Średni czas wykonania testu</p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="column is-5">
+                <div class="tile is-ancestor">
+                    <div class="tile is-parent is-vertical" id="stats-table">
+                        <!-- insert from localData -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SCRIPT -->
+    <script type="module" src="index.js"></script>
+    <!-- END SCRIPT -->
+</body> 
+  
+</html> 
