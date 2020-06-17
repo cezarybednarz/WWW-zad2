@@ -4,10 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "node dist/app.js",
-    "compile": "tsc",
-    "createdb": "ts-node create_db.ts"
+    "compile": "tsc"
   },
   "repository": {
     "type": "git",

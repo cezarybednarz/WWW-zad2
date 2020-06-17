@@ -1,17 +1,26 @@
 {
     "compilerOptions": {
+        "module": "ES2020",
         "target": "es2016",
+        "esModuleInterop": true,
         "removeComments": true,
         "sourceMap": true,
+        "allowSyntheticDefaultImports": true,
         "lib": [
             "es5",
             "dom",
             "ES2015"
         ],
         "watch": false,
-        "listFiles": false
+        "listFiles": false,
+        "baseUrl": ".",
+        "outDir": "dist",
+        "moduleResolution": "node"
     },
     "exclude": [
         "node_modules"
+    ],
+    "include": [
+        "src/*"
     ]
 }
