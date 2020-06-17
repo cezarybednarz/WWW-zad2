@@ -1,0 +1,36 @@
+{
+  "name": "WWW-zad2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node dist/app.js",
+    "compile": "tsc",
+    "createdb": "ts-node create_db.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cezarybednarz/WWW-zad2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cezarybednarz/WWW-zad2/issues"
+  },
+  "homepage": "https://github.com/cezarybednarz/WWW-zad2#readme",
+  "dependencies": {
+    "@types/node": "^14.0.13",
+    "connect-sqlite3": "^0.9.11",
+    "cookie-parser": "^1.4.5",
+    "csurf": "^1.11.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "process": "^0.11.10",
+    "pug": "^2.0.4",
+    "sqlite3": "^4.2.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
+  }
+}
