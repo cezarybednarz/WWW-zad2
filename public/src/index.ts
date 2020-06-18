@@ -9,19 +9,12 @@ let totalCorrectQuestions = 0;
 
 
 let quizNamesJson = [];
-/* ==== fetching content from database ==== */
 
-fetch("http://localhost:1500/quiz_names")
-.then(response => response.json())
-.then(data => {
+async function main() {
+    await fetch("http://localhost:1500/quiz_names")
+    .then(response => response.json())
+    .then(data => quizNamesJson = data);
 
-    console.log(data);
-    quizNamesJson = data;
-
-
-    /* ======================================== */
-
-    console.log(quizNamesJson);
 
     function getDateFromTimestamp(ts: number): string {
         var a = new Date(ts);
@@ -122,4 +115,8 @@ fetch("http://localhost:1500/quiz_names")
         viewGlobalStats();
     }
     // ================================
-});
+}
+
+(async() => {
+    await main();
+})();

@@ -4,12 +4,10 @@ let totalSeconds = 0;
 let totalQuestions = 0;
 let totalCorrectQuestions = 0;
 let quizNamesJson = [];
-fetch("http://localhost:1500/quiz_names")
-    .then(response => response.json())
-    .then(data => {
-    console.log(data);
-    quizNamesJson = data;
-    console.log(quizNamesJson);
+async function main() {
+    await fetch("http://localhost:1500/quiz_names")
+        .then(response => response.json())
+        .then(data => quizNamesJson = data);
     function getDateFromTimestamp(ts) {
         var a = new Date(ts);
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -95,5 +93,8 @@ fetch("http://localhost:1500/quiz_names")
     if (totalTests > 0) {
         viewGlobalStats();
     }
-});
+}
+(async () => {
+    await main();
+})();
 //# sourceMappingURL=index.js.map
