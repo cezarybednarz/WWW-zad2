@@ -1,11 +1,24 @@
 import jsonString from "./quizdata.js"
 import {getTopScoresWithId} from "./database.js"
 
-const quizJson = JSON.parse(jsonString).quiz;
+//const quizJson = JSON.parse(jsonString).quiz;
 let totalTests = 0;
 let totalSeconds = 0;
 let totalQuestions = 0;
 let totalCorrectQuestions = 0;
+
+
+let quizNamesJson = [];
+/* ==== fetching content from database ==== */
+
+await fetch("http://localhost:1500/quiz_names")
+    .then(response => response.json())
+    .then(data => console.log(data));
+
+
+/* ======================================== */
+
+console.log(quizNamesJson);
 
 function getDateFromTimestamp(ts: number): string {
     var a = new Date(ts);
@@ -21,8 +34,8 @@ function getDateFromTimestamp(ts: number): string {
 
 function viewQuizTable() {
     let quizTable: HTMLTableElement = document.getElementById("question-list") as HTMLTableElement;
-    for(var i = 0; i < Object.keys(quizJson).length; i++) {
-        var quizId = quizJson[i].id;
+    for(var i = 0; i < quizNamesJson.length; i++) {
+        var quizId = quizNamesJson[i];
         quizTable.insertAdjacentHTML('beforeend', 
         `<tr>
             <td width="5%"><i class="fa fa-bell-o"></i></td>
@@ -80,8 +93,8 @@ function viewQuizStatsById(quizId: string) {
 }
 
 function viewQuizStats() {
-    for(var i = 0; i < Object.keys(quizJson).length; i++) {
-        var quizId = quizJson[i].id;
+    for(var i = 0; i < quizNamesJson.length; i++) {
+        var quizId = quizNamesJson[i];
         viewQuizStatsById(quizId);
     }
 }
