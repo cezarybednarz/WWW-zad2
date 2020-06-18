@@ -45,10 +45,23 @@ async function getAll(database: db.Database, sql: string, args?: any[]): Promise
     });
 }
 
+export interface Quiz {
+    quiz_name: string;
+    quiz_json: string;
+}
+
+export interface User {
+    username: string;
+    password: string;
+}
+
 
 export async function dropTables(): Promise<void> {
     const sql1 = `DROP TABLE IF EXISTS quiz_data;`;
-    return executeQuery(database, sql1);
+    const sql2 = `DROP TABLE IF EXISTS user`;
+    return executeQuery(database, sql1).then(() => {
+        executeQuery(database, sql2);
+    });
 }
 
 export async function createTables(): Promise<void> {
@@ -58,7 +71,15 @@ export async function createTables(): Promise<void> {
         quiz_json  TEXT NOT NULL
     );
     `;
-    return executeQuery(database, sql1);
+    const sql2 = `
+    CREATE TABLE user (
+        username   TEXT NOT NULL PRIMARY KEY,
+        password   TEXT NOT NULL
+    );
+    `;
+    return executeQuery(database, sql1).then(() => {
+        executeQuery(database, sql2);
+    });
 }
 
 export function addQuiz(quiz_name: string, quiz_json: string) {
@@ -78,11 +99,37 @@ export function getQuizJson(quiz_name: string): Promise<string> { // moze ten pr
     return getQuery(database, sql, [quiz_name]);
 }
 
-export function getAllQuizNames() {
+export function getAllQuizzes(): Promise<Quiz[]> {
     const sql = `
-        SELECT quiz_name
+        SELECT quiz_name, quiz_json
         FROM quiz_data
     `;
     return getAll(database, sql);
+}
 
+export function addUser(username: string, password: string): Promise<void> {
+    const sql =`
+        INSERT INTO user (username, password)
+        VALUES (?, ?);
+    `;
+    return executeQuery(database, sql, [username, password]);
+}
+
+export function userExists(username: string, password: string): Promise<boolean> {
+    const sql = `
+        SELECT username, password
+        FROM user
+        WHERE username = ?
+    `;
+    return new Promise((resolve, reject) => {
+        database.get(sql, [username], (err: Error, user: User) => {
+            if(err) { reject(err); return; }
+            else if(!user || !user.password) {
+                reject(Error('user not found'));
+            }
+            else if(user.password === password) {
+                resolve(true);
+            }
+        })
+    });
 }
