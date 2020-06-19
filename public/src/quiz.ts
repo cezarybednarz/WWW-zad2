@@ -227,17 +227,25 @@ function startCountdown() {
     }, 1000);
 }
 
-// === CHANGING WEBSITE CONTENT ===
-viewQuestionById(quizId, currentQuestion);
-document.getElementById("quiz-name").textContent = quizId;
-document.getElementById("penalty-info").textContent = "kara za niepoprawną odpowiedź: " + String(getPenalty(quizId)) + " s";
-document.getElementById("answer-box").addEventListener('input', onAnswerUpdate);
-document.getElementById("button-next").addEventListener('click', onClickNext);
-document.getElementById("button-prev").addEventListener('click', onClickPrevious);
-document.getElementById("button-finish").addEventListener('click', onClickFinish);
-document.getElementById("button-save").addEventListener('click', onClickSaveResult);
-document.getElementById("button-cancel-1").addEventListener('click', onClickCancelResult);
-document.getElementById("button-cancel-2").addEventListener('click', onClickCancelResult);
-startCountdown();
-// ================================
+async function main() {
 
+
+
+
+    viewQuestionById(quizId, currentQuestion);
+    document.getElementById("quiz-name").textContent = quizId;
+    document.getElementById("penalty-info").textContent = "kara za niepoprawną odpowiedź: " + String(getPenalty(quizId)) + " s";
+    document.getElementById("answer-box").addEventListener('input', onAnswerUpdate);
+    document.getElementById("button-next").addEventListener('click', onClickNext);
+    document.getElementById("button-prev").addEventListener('click', onClickPrevious);
+    document.getElementById("button-finish").addEventListener('click', onClickFinish);
+    document.getElementById("button-save").addEventListener('click', onClickSaveResult);
+    document.getElementById("button-cancel-1").addEventListener('click', onClickCancelResult);
+    document.getElementById("button-cancel-2").addEventListener('click', onClickCancelResult);
+    startCountdown();
+}
+
+
+(async() => {
+    await main();
+})();
