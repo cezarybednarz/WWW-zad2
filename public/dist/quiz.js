@@ -1,4 +1,3 @@
-import jsonString from "./quizdata.js";
 import { putScoreInStorage } from "./database.js";
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
@@ -11,7 +10,7 @@ function getQueryVariable(variable) {
     }
     console.log('Query variable %s not found', variable);
 }
-const quizJson = JSON.parse(jsonString).quiz;
+let quizJson;
 let currentQuestion = 0;
 let quizId = getQueryVariable("id");
 let answers = [];
@@ -21,26 +20,18 @@ let totalTime = 0;
 let totalPenalty = 0;
 let totalCorrect = 0;
 function getQuizIndex(quiz) {
-    var index = -1;
-    for (var i = 0; i < Object.keys(quizJson).length; i++) {
-        if (quizJson[i].id === quiz) {
-            index = i;
-            break;
-        }
-    }
-    return index;
+    return quizJson.id;
 }
 function getPenalty(quiz) {
-    return parseInt(quizJson[getQuizIndex(quiz)].penalty);
+    return parseInt(quizJson.penalty);
 }
 function getQuestionById(quiz, questionId) {
-    var index = getQuizIndex(quiz);
-    document.getElementById('question').textContent = quizJson[index].get;
-    return quizJson[index].questions[questionId];
+    document.getElementById('question').textContent = quizJson.get;
+    return quizJson.questions[questionId];
 }
 function getNumberOfQuestions(quiz) {
     var index = getQuizIndex(quiz);
-    return Object.keys(quizJson[index].questions).length;
+    return Object.keys(quizJson.questions).length;
 }
 function goodAnswer(answer) {
     return /^-?\d+\d*$/.test(answer);
@@ -191,6 +182,9 @@ function startCountdown() {
     }, 1000);
 }
 async function main() {
+    await fetch("http://localhost:1500/quiz_content/" + quizId)
+        .then(response => response.json())
+        .then(data => quizJson = data);
     viewQuestionById(quizId, currentQuestion);
     document.getElementById("quiz-name").textContent = quizId;
     document.getElementById("penalty-info").textContent = "kara za niepoprawną odpowiedź: " + String(getPenalty(quizId)) + " s";

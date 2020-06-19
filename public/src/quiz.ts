@@ -14,7 +14,7 @@ function getQueryVariable(variable: string) {
 }
 
 // === VARIABLES THAT DEFINE CURRENT STATE OF QUIZ ===
-const quizJson = JSON.parse(jsonString).quiz;
+let quizJson;
 let currentQuestion = 0;
 let quizId = getQueryVariable("id");
 let answers: Array<string> = [];
@@ -27,29 +27,21 @@ let totalCorrect = 0;
 
 
 function getQuizIndex(quiz: string): number {
-    var index = -1;
-    for(var i = 0; i < Object.keys(quizJson).length; i++) {
-        if(quizJson[i].id === quiz) {
-            index = i;
-            break;
-        }
-    }
-    return index;
+    return quizJson.id;
 }
 
 function getPenalty(quiz: string): number {
-    return parseInt(quizJson[getQuizIndex(quiz)].penalty);
+    return parseInt(quizJson.penalty);
 }
 
 function getQuestionById(quiz: string, questionId: number) {
-    var index = getQuizIndex(quiz);
-    document.getElementById('question').textContent = quizJson[index].get;
-    return quizJson[index].questions[questionId];
+    document.getElementById('question').textContent = quizJson.get; // to moze sie zbugowac
+    return quizJson.questions[questionId];
 }
 
 function getNumberOfQuestions(quiz : string): number {
     var index = getQuizIndex(quiz);
-    return Object.keys(quizJson[index].questions).length;
+    return Object.keys(quizJson.questions).length;
 }
 
 function goodAnswer(answer: string): boolean {
@@ -229,8 +221,9 @@ function startCountdown() {
 
 async function main() {
 
-
-
+    await fetch("http://localhost:1500/quiz_content/" + quizId)
+    .then(response => response.json())
+    .then(data => quizJson = data);
 
     viewQuestionById(quizId, currentQuestion);
     document.getElementById("quiz-name").textContent = quizId;
