@@ -35,7 +35,7 @@ function getPenalty(quiz: string): number {
 }
 
 function getQuestionById(quiz: string, questionId: number) {
-    document.getElementById('question').textContent = quizJson.get; // to moze sie zbugowac
+    document.getElementById('question').textContent = quizJson.get;
     return quizJson.questions[questionId];
 }
 

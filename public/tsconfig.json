@@ -11,7 +11,7 @@
             "dom",
             "ES2015"
         ],
-        "watch": false,
+        "watch": true,
         "listFiles": false,
         "baseUrl": ".",
         "outDir": "dist",
