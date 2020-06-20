@@ -49,7 +49,23 @@ class Storage {
     changePassword(username, newPassword) {
         return db.deleteUser(username).then(() => db.addUser(username, newPassword));
     }
-    addQuizAnswers(username, quiz_answers) {
+    addQuizAnswers(quiz_name, username, user_answers, user_time) {
+        this.getQuiz(quiz_name).then(quiz_data => {
+            const quiz = JSON.parse(quiz_data.quiz_json);
+            for (var i = 0; i < user_answers.length; i++) {
+                var stats = {
+                    quiz_name: quiz_name,
+                    task_number: i,
+                    username: username,
+                    time: user_time[i],
+                    correct: 0,
+                };
+                if (user_answers[i] == quiz.questions[i].good_answer) {
+                    stats.correct = 1;
+                }
+                db.addStats(stats);
+            }
+        });
     }
 }
 exports.Storage = Storage;

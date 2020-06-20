@@ -55,7 +55,7 @@ export interface User {
     password: string;
 }
 
-export interface Stats {
+export interface Stats_type {
     quiz_name: string;
     task_number: number;
     username: string;
@@ -168,7 +168,7 @@ export function deleteUser(username: string): Promise<void> {
     return executeQuery(database, sql, [username]);
 }
 
-export function addStats(stats: Stats): Promise<void> {
+export function addStats(stats: Stats_type): Promise<void> {
     const sql = `
         INSERT INTO stats (quiz_name, task_number, username, time, correct)
         VALUES (?, ?, ?, ?, ?);

@@ -113,10 +113,7 @@ app.post('/quiz_finished', (req, res) => {
     const username = req.body.username;
     const user_answers = req.body.user_answers;
     const user_time = req.body.user_time;
-    console.log("quiz_name: " + quiz_name);
-    console.log("username: " + username);
-    console.log("user_answers: " + user_answers);
-    console.log("user_time: " + user_time);
+    storage.addQuizAnswers(quiz_name, username, user_answers, user_time);
 });
 app.use(express_1.default.static('../public'));
 const server = app.listen(1500, () => {
