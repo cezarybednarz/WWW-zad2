@@ -28,7 +28,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userExists = exports.addUser = exports.getAllQuizzes = exports.getQuizJson = exports.addQuiz = exports.createTables = exports.dropTables = void 0;
+exports.deleteUser = exports.userExists = exports.addUser = exports.getAllQuizzes = exports.getQuiz = exports.addQuiz = exports.createTables = exports.dropTables = void 0;
 const db = __importStar(require("sqlite3"));
 const process_1 = require("process");
 const database = new db.Database('database.sqlite', (error) => {
@@ -114,15 +114,15 @@ function addQuiz(quiz_name, quiz_json) {
     return executeQuery(database, sql, [quiz_name, quiz_json]);
 }
 exports.addQuiz = addQuiz;
-function getQuizJson(quiz_name) {
+function getQuiz(quiz_name) {
     const sql = `
-        SELECT quiz_json 
+        SELECT quiz_name, quiz_json 
         FROM quiz_data
         WHERE quiz_name = ?;
     `;
     return getQuery(database, sql, [quiz_name]);
 }
-exports.getQuizJson = getQuizJson;
+exports.getQuiz = getQuiz;
 function getAllQuizzes() {
     const sql = `
         SELECT quiz_name, quiz_json
@@ -157,8 +157,19 @@ function userExists(username, password) {
             else if (user.password === password) {
                 resolve(true);
             }
+            else {
+                resolve(false);
+            }
         });
     });
 }
 exports.userExists = userExists;
+function deleteUser(username) {
+    const sql = `
+        DELETE FROM user
+        WHERE username = ?;
+    `;
+    return executeQuery(database, sql, [username]);
+}
+exports.deleteUser = deleteUser;
 //# sourceMappingURL=database.js.map

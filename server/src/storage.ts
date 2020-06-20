@@ -1,5 +1,5 @@
 import * as db from './database';
-import {Quiz} from './database';
+import { Quiz_data } from './database';
 import { resolve } from 'path';
 
 export class Storage {
@@ -17,22 +17,22 @@ export class Storage {
 
     /* tablica stringów */
     getQuizNameListArray(): Promise<string[]> { 
-        return db.getAllQuizzes().then((quizzes: Quiz[]) => 
+        return db.getAllQuizzes().then((quizzes: Quiz_data[]) => 
             quizzes.map(quiz => quiz.quiz_name)
         );
     }
 
     /* string z tablicą */
     getQuizNameListString(): Promise<string> { 
-        return db.getAllQuizzes().then((quizzes: Quiz[]) => 
+        return db.getAllQuizzes().then((quizzes: Quiz_data[]) => 
             quizzes.map(quiz => quiz.quiz_name)
         ).then((quizzes: string[]) =>
             JSON.stringify(quizzes)
         );
     }
 
-    getQuizJson(quiz_name: string): Promise<string> {
-        return db.getQuizJson(quiz_name)
+    getQuiz(quiz_name: string): Promise<Quiz_data> {
+        return db.getQuiz(quiz_name)
     }
 
     addUser(username: string, password: string): Promise<void> {
@@ -41,5 +41,11 @@ export class Storage {
 
     userExists(username: string, password: string): Promise<boolean> {
         return db.userExists(username, password);   
+    }
+
+    changePassword(username: string, newPassword: string): Promise<void> {
+        return db.deleteUser(username).then(() => 
+            db.addUser(username, newPassword)
+        );
     }
 }

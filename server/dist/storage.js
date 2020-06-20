@@ -37,14 +37,17 @@ class Storage {
     getQuizNameListString() {
         return db.getAllQuizzes().then((quizzes) => quizzes.map(quiz => quiz.quiz_name)).then((quizzes) => JSON.stringify(quizzes));
     }
-    getQuizJson(quiz_name) {
-        return db.getQuizJson(quiz_name);
+    getQuiz(quiz_name) {
+        return db.getQuiz(quiz_name);
     }
     addUser(username, password) {
         return db.addUser(username, password);
     }
     userExists(username, password) {
         return db.userExists(username, password);
+    }
+    changePassword(username, newPassword) {
+        return db.deleteUser(username).then(() => db.addUser(username, newPassword));
     }
 }
 exports.Storage = Storage;

@@ -45,7 +45,7 @@ async function getAll(database: db.Database, sql: string, args?: any[]): Promise
     });
 }
 
-export interface Quiz {
+export interface Quiz_data {
     quiz_name: string;
     quiz_json: string;
 }
@@ -82,7 +82,7 @@ export async function createTables(): Promise<void> {
     });
 }
 
-export function addQuiz(quiz_name: string, quiz_json: string) {
+export function addQuiz(quiz_name: string, quiz_json: string): Promise<void> {
     const sql = `
         INSERT INTO quiz_data (quiz_name, quiz_json)
         VALUES (?, ?);
@@ -90,16 +90,16 @@ export function addQuiz(quiz_name: string, quiz_json: string) {
     return executeQuery(database, sql, [quiz_name, quiz_json]);
 }
 
-export function getQuizJson(quiz_name: string): Promise<string> { // moze ten promise zly
+export function getQuiz(quiz_name: string): Promise<Quiz_data> {
     const sql = `
-        SELECT quiz_json 
+        SELECT quiz_name, quiz_json 
         FROM quiz_data
         WHERE quiz_name = ?;
     `;
     return getQuery(database, sql, [quiz_name]);
 }
 
-export function getAllQuizzes(): Promise<Quiz[]> {
+export function getAllQuizzes(): Promise<Quiz_data[]> {
     const sql = `
         SELECT quiz_name, quiz_json
         FROM quiz_data
@@ -130,6 +130,17 @@ export function userExists(username: string, password: string): Promise<boolean>
             else if(user.password === password) {
                 resolve(true);
             }
+            else {
+                resolve(false);
+            }
         })
     });
+}
+
+export function deleteUser(username: string): Promise<void> {
+    const sql = `
+        DELETE FROM user
+        WHERE username = ?;
+    `;
+    return executeQuery(database, sql, [username]);
 }

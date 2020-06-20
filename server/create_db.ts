@@ -118,7 +118,7 @@ async function main() {
 
     await quizJson.forEach(async (quiz) => {
         console.log("adding quiz: '" + quiz.id + "'");
-        await storage.addQuiz(quiz.id, quiz.toString());
+        await storage.addQuiz(quiz.id, JSON.stringify(quiz));
     });
 
     await storage.addUser('user1', 'user1').then(() => {
