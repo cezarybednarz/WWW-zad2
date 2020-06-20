@@ -55,12 +55,22 @@ export interface User {
     password: string;
 }
 
+export interface Stats {
+    quiz_name: string;
+    task_number: number;
+    username: string;
+    time: number;
+    correct: number;
+}
 
 export async function dropTables(): Promise<void> {
     const sql1 = `DROP TABLE IF EXISTS quiz_data;`;
     const sql2 = `DROP TABLE IF EXISTS user`;
+    const sql3 = `DROP TABLE IF EXISTS stats`;
     return executeQuery(database, sql1).then(() => {
-        executeQuery(database, sql2);
+        executeQuery(database, sql2).then(() => {
+            executeQuery(database, sql3);
+        });
     });
 }
 
@@ -77,8 +87,21 @@ export async function createTables(): Promise<void> {
         password   TEXT NOT NULL
     );
     `;
+    const sql3 = `
+    CREATE TABLE stats (
+        quiz_name   TEXT NOT NULL,
+        task_number INTEGER NOT NULL PRIMARY KEY,
+        username    TEXT NOT NULL,
+        time        INTEGER NOT NULL,
+        correct     INTEGER NOT NULL,
+        FOREIGN KEY(quiz_name) REFERENCES quiz(quiz_name)
+        FOREIGN KEY(username) REFERENCES user(username)
+    )
+    `;
     return executeQuery(database, sql1).then(() => {
-        executeQuery(database, sql2);
+        executeQuery(database, sql2).then(() => {
+            executeQuery(database, sql3);
+        });
     });
 }
 
@@ -144,3 +167,14 @@ export function deleteUser(username: string): Promise<void> {
     `;
     return executeQuery(database, sql, [username]);
 }
+
+export function addStats(stats: Stats): Promise<void> {
+    const sql = `
+        INSERT INTO stats (quiz_name, task_number, username, time, correct)
+        VALUES (?, ?, ?, ?, ?);
+    `;
+    return executeQuery(database, sql, 
+        [stats.quiz_name, stats.task_number, stats.username, stats.time, stats.correct]
+    );
+}
+

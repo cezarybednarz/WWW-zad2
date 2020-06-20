@@ -28,7 +28,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.userExists = exports.addUser = exports.getAllQuizzes = exports.getQuiz = exports.addQuiz = exports.createTables = exports.dropTables = void 0;
+exports.addStats = exports.deleteUser = exports.userExists = exports.addUser = exports.getAllQuizzes = exports.getQuiz = exports.addQuiz = exports.createTables = exports.dropTables = void 0;
 const db = __importStar(require("sqlite3"));
 const process_1 = require("process");
 const database = new db.Database('database.sqlite', (error) => {
@@ -80,8 +80,11 @@ function dropTables() {
     return __awaiter(this, void 0, void 0, function* () {
         const sql1 = `DROP TABLE IF EXISTS quiz_data;`;
         const sql2 = `DROP TABLE IF EXISTS user`;
+        const sql3 = `DROP TABLE IF EXISTS stats`;
         return executeQuery(database, sql1).then(() => {
-            executeQuery(database, sql2);
+            executeQuery(database, sql2).then(() => {
+                executeQuery(database, sql3);
+            });
         });
     });
 }
@@ -100,8 +103,21 @@ function createTables() {
         password   TEXT NOT NULL
     );
     `;
+        const sql3 = `
+    CREATE TABLE stats (
+        quiz_name   TEXT NOT NULL,
+        task_number INTEGER NOT NULL PRIMARY KEY,
+        username    TEXT NOT NULL,
+        time        INTEGER NOT NULL,
+        correct     INTEGER NOT NULL,
+        FOREIGN KEY(quiz_name) REFERENCES quiz(quiz_name)
+        FOREIGN KEY(username) REFERENCES user(username)
+    )
+    `;
         return executeQuery(database, sql1).then(() => {
-            executeQuery(database, sql2);
+            executeQuery(database, sql2).then(() => {
+                executeQuery(database, sql3);
+            });
         });
     });
 }
@@ -172,4 +188,12 @@ function deleteUser(username) {
     return executeQuery(database, sql, [username]);
 }
 exports.deleteUser = deleteUser;
+function addStats(stats) {
+    const sql = `
+        INSERT INTO stats (quiz_name, task_number, username, time, correct)
+        VALUES (?, ?, ?, ?, ?);
+    `;
+    return executeQuery(database, sql, [stats.quiz_name, stats.task_number, stats.username, stats.time, stats.correct]);
+}
+exports.addStats = addStats;
 //# sourceMappingURL=database.js.map

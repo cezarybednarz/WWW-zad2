@@ -49,6 +49,8 @@ class Storage {
     changePassword(username, newPassword) {
         return db.deleteUser(username).then(() => db.addUser(username, newPassword));
     }
+    addQuizAnswers(username, quiz_answers) {
+    }
 }
 exports.Storage = Storage;
 //# sourceMappingURL=storage.js.map

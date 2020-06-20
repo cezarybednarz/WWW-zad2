@@ -114,7 +114,7 @@ async function main() {
         console.log("Creating new tables");
     });
 
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     await quizJson.forEach(async (quiz) => {
         console.log("adding quiz: '" + quiz.id + "'");

@@ -48,4 +48,9 @@ export class Storage {
             db.addUser(username, newPassword)
         );
     }
+
+    addQuizAnswers(username: string, quiz_answers: JSON) {
+        // todo
+    }
+    
 }
