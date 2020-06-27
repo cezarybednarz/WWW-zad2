@@ -49,7 +49,7 @@ export class Storage {
         );
     }
 
-    addQuizAnswers(quiz_name: string, username: string, user_answers: string[], user_time: number[]) {
+    addQuizAnswers(quiz_name: string, username: string, user_answers: string[], user_time: number[], penalty: number) {
         this.getQuiz(quiz_name).then(quiz_data => {
             const quiz = JSON.parse(quiz_data.quiz_json);
             for(var i = 0; i < user_answers.length; i++) {
@@ -61,11 +61,18 @@ export class Storage {
                     correct: 0,
                 }
                 if(user_answers[i] == quiz.questions[i].good_answer) {
-                    stats.correct = 1;
+                    stats.correct = penalty;
                 }
                 db.addStats(stats);
             }
         });
     }
     
+    getQuizzesStatsByUser(username: string): Promise<Stats_type[]> {
+        return db.getStatsByUser(username);
+    }
+
+    getQuizStatsByUser(username: string, quiz_name: string): Promise<Stats_type[]> {
+        return db.getQuizStatsByUser(username, quiz_name);
+    }
 }

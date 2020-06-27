@@ -28,7 +28,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addStats = exports.deleteUser = exports.userExists = exports.addUser = exports.getAllQuizzes = exports.getQuiz = exports.addQuiz = exports.createTables = exports.dropTables = void 0;
+exports.getQuizStatsByUser = exports.getStatsByUser = exports.addStats = exports.deleteUser = exports.userExists = exports.addUser = exports.getAllQuizzes = exports.getQuiz = exports.addQuiz = exports.createTables = exports.dropTables = void 0;
 const db = __importStar(require("sqlite3"));
 const process_1 = require("process");
 const database = new db.Database('database.sqlite', (error) => {
@@ -196,4 +196,22 @@ function addStats(stats) {
     return executeQuery(database, sql, [stats.quiz_name, stats.task_number, stats.username, stats.time, stats.correct]);
 }
 exports.addStats = addStats;
+function getStatsByUser(username) {
+    const sql = `
+        SELECT quiz_name, task_number, username, time, correct
+        FROM stats
+        where username = ?;
+    `;
+    return getAll(database, sql, [username]);
+}
+exports.getStatsByUser = getStatsByUser;
+function getQuizStatsByUser(username, quiz_name) {
+    const sql = `
+        SELECT quiz_name, task_number, username, time, correct
+        FROM stats
+        WHERE username = ? AND quiz_name = ?;
+    `;
+    return getAll(database, sql, [username, quiz_name]);
+}
+exports.getQuizStatsByUser = getQuizStatsByUser;
 //# sourceMappingURL=database.js.map

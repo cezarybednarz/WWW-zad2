@@ -178,3 +178,21 @@ export function addStats(stats: Stats_type): Promise<void> {
     );
 }
 
+
+export function getStatsByUser(username: string): Promise<Stats_type[]> {
+    const sql = `
+        SELECT quiz_name, task_number, username, time, correct
+        FROM stats
+        where username = ?;
+    `;
+    return getAll(database, sql, [username]);
+}
+
+export function getQuizStatsByUser(username: string, quiz_name: string): Promise<Stats_type[]> { 
+    const sql = `
+        SELECT quiz_name, task_number, username, time, correct
+        FROM stats
+        WHERE username = ? AND quiz_name = ?;
+    `;
+    return getAll(database, sql, [username, quiz_name]);
+}

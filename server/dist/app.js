@@ -48,6 +48,22 @@ app.use(express_session_1.default({
     saveUninitialized: true,
     store: new sqliteSession()
 }));
+app.get('/user_stats', (req, res) => {
+    if (req.session.username) {
+        storage.getQuizzesStatsByUser(req.session.username).then(stats => res.send(stats));
+    }
+    else {
+        res.send("{}");
+    }
+});
+app.get('/user_quiz_stats/:id', (req, res) => {
+    if (req.session.username) {
+        storage.getQuizStatsByUser(req.session.username, req.params.id).then(stats => res.send(stats));
+    }
+    else {
+        res.send("");
+    }
+});
 app.get('/quiz_names', (req, res) => {
     storage.getQuizNameListString().then((quiz => {
         res.send(quiz);
@@ -113,7 +129,8 @@ app.post('/quiz_finished', (req, res) => {
     const username = req.body.username;
     const user_answers = req.body.user_answers;
     const user_time = req.body.user_time;
-    storage.addQuizAnswers(quiz_name, username, user_answers, user_time);
+    const penalty = req.body.penalty;
+    storage.addQuizAnswers(quiz_name, username, user_answers, user_time, penalty);
 });
 app.use(express_1.default.static('../public'));
 const server = app.listen(1500, () => {

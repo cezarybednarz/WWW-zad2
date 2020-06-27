@@ -49,7 +49,7 @@ class Storage {
     changePassword(username, newPassword) {
         return db.deleteUser(username).then(() => db.addUser(username, newPassword));
     }
-    addQuizAnswers(quiz_name, username, user_answers, user_time) {
+    addQuizAnswers(quiz_name, username, user_answers, user_time, penalty) {
         this.getQuiz(quiz_name).then(quiz_data => {
             const quiz = JSON.parse(quiz_data.quiz_json);
             for (var i = 0; i < user_answers.length; i++) {
@@ -61,11 +61,17 @@ class Storage {
                     correct: 0,
                 };
                 if (user_answers[i] == quiz.questions[i].good_answer) {
-                    stats.correct = 1;
+                    stats.correct = penalty;
                 }
                 db.addStats(stats);
             }
         });
+    }
+    getQuizzesStatsByUser(username) {
+        return db.getStatsByUser(username);
+    }
+    getQuizStatsByUser(username, quiz_name) {
+        return db.getQuizStatsByUser(username, quiz_name);
     }
 }
 exports.Storage = Storage;
