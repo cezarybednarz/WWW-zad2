@@ -1,4 +1,3 @@
-import { putScoreInStorage } from "./database.js";
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split('&');
@@ -19,6 +18,7 @@ let quizFinished = false;
 let totalTime = 0;
 let totalPenalty = 0;
 let totalCorrect = 0;
+let username = "";
 function getQuizIndex(quiz) {
     return quizJson.id;
 }
@@ -155,17 +155,34 @@ function onClickFinish() {
     if (getNumberOfGoodAnswers(quizId) === getNumberOfQuestions(quizId)) {
         quizFinished = true;
         viewScore(quizId);
+        saveResultToDatabase();
     }
 }
-function onClickSaveResult() {
+function onClickSave() {
     if (!quizFinished) {
         return;
     }
-    putScoreInStorage(quizId, totalTime + totalPenalty, totalTime, Date.now(), totalCorrect, getNumberOfQuestions(quizId));
     window.location.href = "index.html";
 }
-function onClickCancelResult() {
-    window.location.href = "index.html";
+function saveResultToDatabase() {
+    if (!quizFinished) {
+        return;
+    }
+    const data = {
+        quiz_name: quizId,
+        username: username,
+        user_answers: answers,
+        user_time: seconds,
+        penalty: getPenalty(quizId)
+    };
+    console.log(data);
+    fetch('http://localhost:1500/quiz_finished', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
 }
 function startCountdown() {
     for (var i = 0; i < getNumberOfQuestions(quizId); i++) {
@@ -185,6 +202,9 @@ async function main() {
     await fetch("http://localhost:1500/quiz_content/" + quizId)
         .then(response => response.json())
         .then(data => quizJson = data);
+    await fetch("http://localhost:1500/username")
+        .then(response => response.json())
+        .then(data => username = data.username);
     viewQuestionById(quizId, currentQuestion);
     document.getElementById("quiz-name").textContent = quizId;
     document.getElementById("penalty-info").textContent = "kara za niepoprawną odpowiedź: " + String(getPenalty(quizId)) + " s";
@@ -192,10 +212,9 @@ async function main() {
     document.getElementById("button-next").addEventListener('click', onClickNext);
     document.getElementById("button-prev").addEventListener('click', onClickPrevious);
     document.getElementById("button-finish").addEventListener('click', onClickFinish);
-    document.getElementById("button-save").addEventListener('click', onClickSaveResult);
-    document.getElementById("button-cancel-1").addEventListener('click', onClickCancelResult);
-    document.getElementById("button-cancel-2").addEventListener('click', onClickCancelResult);
+    document.getElementById("button-save").addEventListener('click', onClickSave);
     startCountdown();
+    document.body.style.visibility = "visible";
 }
 (async () => {
     await main();

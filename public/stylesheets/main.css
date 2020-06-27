@@ -16,3 +16,7 @@ html, body {
 #button-prev {
     visibility: hidden;
 }
+
+body {
+    visibility: hidden;
+}

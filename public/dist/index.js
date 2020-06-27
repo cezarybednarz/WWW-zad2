@@ -4,6 +4,7 @@ let totalSeconds = 0;
 let totalQuestions = 0;
 let totalCorrectQuestions = 0;
 let quizNamesJson = [];
+let userStats = [];
 let username;
 function getDateFromTimestamp(ts) {
     var a = new Date(ts);
@@ -16,13 +17,37 @@ function getDateFromTimestamp(ts) {
     var sec = a.getSeconds();
     return date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
 }
+function quizResult(quiz) {
+    var result = 0;
+    var quizExists = 0;
+    userStats.forEach(stat => {
+        if (stat.quiz_name === quiz) {
+            quizExists = 1;
+            result += stat.time;
+            if (stat.correct) {
+                result += stat.correct;
+            }
+        }
+    });
+    if (quizExists) {
+        return result;
+    }
+    else {
+        return -1;
+    }
+}
 function viewQuizTable() {
     let quizTable = document.getElementById("question-list");
     for (var i = 0; i < quizNamesJson.length; i++) {
         var quizId = quizNamesJson[i];
+        var result = quizResult(quizId);
+        var info = "";
+        if (result != -1) {
+            info = " wynik: " + result;
+        }
         quizTable.insertAdjacentHTML('beforeend', `<tr>
             <td width="5%"><i class="fa fa-bell-o"></i></td>
-            <td>${quizId}</td>
+            <td>${quizId} <i><small><small>${info}</small></small></i></td>
             <td class="level-right"><a class="button is-small is-success" href="quiz.html?id=${quizId}">Start</a></td>
         </tr>`);
     }
@@ -109,6 +134,9 @@ async function main() {
         .then(data => username = data.username);
     if (username && username != "") {
         showUsername();
+        await fetch("http://localhost:1500/user_stats")
+            .then(response => response.json())
+            .then(data => userStats = data);
     }
     else {
         showNoUsername();
@@ -118,6 +146,7 @@ async function main() {
     if (totalTests > 0) {
         viewGlobalStats();
     }
+    document.body.style.visibility = "visible";
 }
 (async () => {
     await main();
