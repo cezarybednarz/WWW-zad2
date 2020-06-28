@@ -198,3 +198,12 @@ export function getQuizStatsByUser(username: string, quiz_name: string): Promise
     `;
     return getAll(database, sql, [username, quiz_name]);
 }
+
+export function getStatsByQuiz(quiz_name: string): Promise<Stats_type[]> {
+    const sql = `
+        SELECT quiz_name, task_number, username, time, correct, user_result
+        FROM stats
+        where quiz_name = ?;
+    `;
+    return getAll(database, sql, [quiz_name]);
+}

@@ -74,6 +74,9 @@ class Storage {
     getQuizStatsByUser(username, quiz_name) {
         return db.getQuizStatsByUser(username, quiz_name);
     }
+    getQuizStatsByQuiz(quiz_name) {
+        return db.getStatsByQuiz(quiz_name);
+    }
 }
 exports.Storage = Storage;
 //# sourceMappingURL=storage.js.map

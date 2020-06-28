@@ -51,6 +51,17 @@ app.get('/user_quiz_stats/:id', (req, res) => {
     }
 });
 
+app.get('/quiz_quiz_stats/:id', (req, res) => {
+    if(req.session.username) {
+        storage.getQuizStatsByQuiz(req.params.id).then(stats => 
+            res.send(stats)
+        );
+    }
+    else {
+        res.send("");
+    }
+});
+
 app.get('/quiz_names', (req, res) => {
     storage.getQuizNameListString().then((quiz => {
         res.send(quiz);

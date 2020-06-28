@@ -77,4 +77,8 @@ export class Storage {
     getQuizStatsByUser(username: string, quiz_name: string): Promise<Stats_type[]> {
         return db.getQuizStatsByUser(username, quiz_name);
     }
+
+    getQuizStatsByQuiz(quiz_name: string): Promise<Stats_type[]> {
+        return db.getStatsByQuiz(quiz_name);
+    }
 }
