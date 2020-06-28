@@ -59,10 +59,12 @@ export class Storage {
                     username: username,
                     time: user_time[i],
                     correct: 0,
+                    user_result: Number(user_answers[i])
                 }
                 if(user_answers[i] == quiz.questions[i].good_answer) {
                     stats.correct = penalty;
                 }
+
                 db.addStats(stats);
             }
         });

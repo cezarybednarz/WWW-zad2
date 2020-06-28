@@ -61,6 +61,7 @@ export interface Stats_type {
     username: string;
     time: number;
     correct: number;
+    user_result: number;
 }
 
 export async function dropTables(): Promise<void> {
@@ -90,10 +91,11 @@ export async function createTables(): Promise<void> {
     const sql3 = `
     CREATE TABLE stats (
         quiz_name   TEXT NOT NULL,
-        task_number INTEGER NOT NULL PRIMARY KEY,
+        task_number INTEGER NOT NULL,
         username    TEXT NOT NULL,
         time        INTEGER NOT NULL,
         correct     INTEGER NOT NULL,
+        user_result INTEGER NOT NULL,
         FOREIGN KEY(quiz_name) REFERENCES quiz(quiz_name)
         FOREIGN KEY(username) REFERENCES user(username)
     )
@@ -170,18 +172,18 @@ export function deleteUser(username: string): Promise<void> {
 
 export function addStats(stats: Stats_type): Promise<void> {
     const sql = `
-        INSERT INTO stats (quiz_name, task_number, username, time, correct)
-        VALUES (?, ?, ?, ?, ?);
+        INSERT INTO stats (quiz_name, task_number, username, time, correct, user_result)
+        VALUES (?, ?, ?, ?, ?, ?);
     `;
     return executeQuery(database, sql, 
-        [stats.quiz_name, stats.task_number, stats.username, stats.time, stats.correct]
+        [stats.quiz_name, stats.task_number, stats.username, stats.time, stats.correct, stats.user_result]
     );
 }
 
 
 export function getStatsByUser(username: string): Promise<Stats_type[]> {
     const sql = `
-        SELECT quiz_name, task_number, username, time, correct
+        SELECT quiz_name, task_number, username, time, correct, user_result
         FROM stats
         where username = ?;
     `;
@@ -190,7 +192,7 @@ export function getStatsByUser(username: string): Promise<Stats_type[]> {
 
 export function getQuizStatsByUser(username: string, quiz_name: string): Promise<Stats_type[]> { 
     const sql = `
-        SELECT quiz_name, task_number, username, time, correct
+        SELECT quiz_name, task_number, username, time, correct, user_result
         FROM stats
         WHERE username = ? AND quiz_name = ?;
     `;
