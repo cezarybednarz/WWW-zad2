@@ -69,16 +69,17 @@ app.get('/quiz_names', (req, res) => {
 });
 
 app.get('/quiz_content/:id', (req, res) => {
-    const quizId = req.params.id;
-    storage.getQuiz(quizId).then(quiz => 
-        res.send(JSON.parse(quiz.quiz_json))
-    );
+    if(req.session.username) {
+        const quizId = req.params.id;
+        storage.getQuiz(quizId).then(quiz => 
+            res.send(JSON.parse(quiz.quiz_json))
+        );
+    }
 });
 
 app.post('/change_password', (req, res) => {
     const newPassword = req.body.newPassword;
     const username = req.session.username;
-    console.log("user: " + username + " is changing password to: " + newPassword);
     if(username) {
         storage.changePassword(username, newPassword);
         req.session.destroy(err => {
@@ -101,7 +102,6 @@ app.get('/username', (req, res) => {
 app.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    console.log("username: " + username + " password: " + password);
     db.userExists(username, password).then(exists => {
         if(exists) {
             req.session.regenerate(err => {
@@ -113,7 +113,6 @@ app.post('/login', (req, res) => {
             });
         }
         else {
-            console.log("invalid password");
             res.redirect(req.get('referer'));
         }
     }, err => res.redirect(req.get('referer')));
