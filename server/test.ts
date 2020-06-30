@@ -21,7 +21,7 @@ const PATH = `http://localhost:${PORT}`;
 
 exec('ts-node create_db_test.ts');
 const server = app.listen(PORT);
-/*
+
 describe('test server for logging, sessions and changing password', () => {
     it('redirect to home page after login', async () => {
         await removeSession();
@@ -70,17 +70,53 @@ describe('test server for logging, sessions and changing password', () => {
         expect(buttonClasses).to.include('Login');
     });
 });
-*/
+
+
 describe('test if you can solve one quiz multiple times', () => {
     it('redirect to home page after login', async () => {
         await removeSession();
         await driver.get(PATH);
         await doLogin('user1', 'user1');
         await solveTestQuiz('2', '2', 1, 1);
+        await driver.get(PATH);
+        await driver.sleep(500);
         const buttonClasses = await (await driver.find('#start-quiz-button')).getText();
         expect(buttonClasses).to.include('Zobacz wyniki');
     });
 });
+
+describe('test if percentages of time spent on questions are correct', () => {
+    it('redirect to home page after login', async () => {
+        await removeSession();
+        await driver.get(PATH);
+
+        await doLogin('user1', 'user1');
+
+        let realFirstTime = 3;
+        let realSecondTime = 6;
+
+        /* 3 seconds on first question, 6 on second */
+        await solveTestQuiz('2', '2', realFirstTime, realSecondTime); 
+
+        await driver.sleep(200);
+        let firstTime = await (await driver.find('#time-1')).getText();
+        let secondTime = await (await driver.find('#time-2')).getText();
+
+        firstTime = firstTime.slice(0, firstTime.length - 2);
+        secondTime = secondTime.slice(0, secondTime.length - 2);
+
+
+        /* check if time in [time - 1, time + 1] */
+        expect(Number(firstTime)).to.be.lessThan(realFirstTime + 2)
+            .to.be.greaterThan(realFirstTime - 2);
+
+        expect(Number(secondTime)).to.be.lessThan(realSecondTime + 2)
+            .to.be.greaterThan(realSecondTime - 2);
+
+    });
+});
+
+
 
 
 
@@ -114,8 +150,6 @@ async function solveTestQuiz(first: string, second: string, firstTime: number, s
     await driver.sleep(secondTime * 1000);
     await driver.find("#answer-box").sendKeys(second);
     await driver.find("#button-finish").doClick();
-    await driver.get(PATH);
-    await driver.sleep(500);
 }
 
 async function changePassword(newPassword: string): Promise<void> {

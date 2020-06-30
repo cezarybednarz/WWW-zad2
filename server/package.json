@@ -46,6 +46,7 @@
     "typescript": "^3.9.5"
   },
   "devDependencies": {
-    "@types/selenium-webdriver": "^2.53.36"
+    "@types/selenium-webdriver": "^2.53.36",
+    "expect": "^26.1.0"
   }
 }
