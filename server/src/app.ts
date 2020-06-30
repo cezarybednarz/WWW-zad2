@@ -6,6 +6,8 @@ import session from 'express-session'
 import * as db from './database';
 import {Storage} from './storage';
 import connect from 'connect-sqlite3';
+import { exit } from "process";
+import * as sqlite3 from 'sqlite3';
 
 const sqliteSession = connect(session);
 const csrfProtection = csurf({cookie: true});
@@ -77,15 +79,32 @@ app.get('/quiz_content/:id', (req, res) => {
     }
 });
 
+function deleteAllSessions(user: string) {
+    const database = new sqlite3.Database('sessions', (error: Error) => {
+        if(error) {
+            console.error('Cannot estabilish connection with database');
+            exit(1);
+        }
+    });
+    const sql = `DELETE FROM sessions WHERE sess LIKE '%"username":"${user}"%';`;
+    database.run(sql, (err: Error) => {
+        if(err) {
+            console.log(err);
+            return;
+        }
+    });
+}
+
 app.post('/change_password', (req, res) => {
     const newPassword = req.body.newPassword;
     const username = req.session.username;
     if(username) {
         storage.changePassword(username, newPassword);
-        req.session.destroy(err => {
-            if(err) { console.error(err); }
-        });
-        res.redirect('/');
+        deleteAllSessions(req.session.username);
+        setTimeout(() => {
+            res.redirect('/');
+        }, 
+        100);
     }
 });
 
