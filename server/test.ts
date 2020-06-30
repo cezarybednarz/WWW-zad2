@@ -73,7 +73,7 @@ describe('test server for logging, sessions and changing password', () => {
 
 
 describe('test if you can solve one quiz multiple times', () => {
-    it('redirect to home page after login', async () => {
+    it('cant access the same quiz second time', async () => {
         await removeSession();
         await driver.get(PATH);
         await doLogin('user1', 'user1');
@@ -86,11 +86,11 @@ describe('test if you can solve one quiz multiple times', () => {
 });
 
 describe('test if percentages of time spent on questions are correct', () => {
-    it('redirect to home page after login', async () => {
+    it('should spend 3 seconds on first question and 6 on second', async () => {
         await removeSession();
         await driver.get(PATH);
 
-        await doLogin('user1', 'user1');
+        await doLogin('user2', 'user2');
 
         let realFirstTime = 3;
         let realSecondTime = 6;
@@ -124,6 +124,9 @@ describe('clean database after testing', () => {
     it('drop tables', async () => {
         const storage = new Storage();
         storage.dropTables();
+    });
+    it('restoring old database', async () => {
+        exec('npm run createdb');
     });
 });
 
