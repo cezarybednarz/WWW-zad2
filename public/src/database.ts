@@ -1,5 +1,5 @@
 
-
+// deprecated, now using database
 
 export function putScoreInStorage(quizId: string, score: number, time: number, date: number,
     correct: number, total: number) {

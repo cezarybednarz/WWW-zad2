@@ -109,7 +109,7 @@ function viewScore(quiz) {
             <td class="has-text-weight-medium">${i + 1}</td>
             <td>${answers[i]}</td>
             <td>${correctAnswer}</td>
-            <td>${seconds[i] + " s"}</td>
+            <td id="time-${i + 1}">${seconds[i] + " s"}</td>
             <td>${penalty}</td>
         </tr>
         `);

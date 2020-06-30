@@ -42,77 +42,34 @@ function getDateFromTimestamp(ts: number): string {
 }
 
 function viewQuizTable() {
+    if(username ==="") {
+        return;
+    }
+
     let quizTable: HTMLTableElement = document.getElementById("question-list") as HTMLTableElement;
     for(var i = 0; i < quizNamesJson.length; i++) {
         var quizId = quizNamesJson[i];
         var result = quizResult(quizId);
         var info = "";
+        var startQuizText = "Start";
+        var ifStats = "";
         if(result != -1) {
             info = " wynik: " + result;
+            startQuizText = "Zobacz wyniki";
+            ifStats = "-stats";
         }
+        
+        
 
         quizTable.insertAdjacentHTML('beforeend', 
         `<tr>
             <td width="5%"><i class="fa fa-bell-o"></i></td>
             <td>${quizId} <i><small><small>${info}</small></small></i></td>
-            <td class="level-right"><a class="button is-small is-success" href="quiz.html?id=${quizId}">Start</a></td>
+            <td class="level-right" ><a class="button is-small is-success" id="start-quiz-button" href="quiz${ifStats}.html?id=${quizId}">${startQuizText}</a></td>
         </tr>`);
     }
 }
 
-function viewQuizStatsById(quizId: string) {
-    var resultTable = getTopScoresWithId(quizId);
-    var statsTable = document.getElementById("stats-table");
-    statsTable.insertAdjacentHTML('beforeend', 
-    `<article class="tile is-child box">
-        <p class="subtitle">${quizId}</p>
-        <p class="content">
-            <table class="table">
-                <thead id="thead-${quizId}">
-                    <tr>
-                        <th></th>
-                        <th>Wynik</th>
-                        <th>Czas</th>
-                        <th>Poprawne</th>
-                        <th>Data</th>
-                    </tr>
-                </thead>
-                <tbody id='table-${quizId}'>
-                    <!-- FILLING IN LOOP -->
-                </tbody>
-            </table>
-        </p>
-    </article>
-    `);
-    var currTable = document.getElementById("table-" + quizId);
-    if(resultTable.length == 0) {
-        currTable.insertAdjacentHTML('beforeend', 'Wypełnij test, aby wyświetlić wyniki')
-    }
-    else {
-        for(var i = 0; i < resultTable.length; i++) {
-            currTable.insertAdjacentHTML('beforeend', 
-            `<tr>
-                <td><b>${i+1}</b></td>
-                <td>${resultTable[i].score}</td>
-                <td>${resultTable[i].time} s</td>
-                <td>${resultTable[i].correct}/${resultTable[i].total}</td>
-                <td>${getDateFromTimestamp(resultTable[i].date)}</td>
-            </tr>
-            `);
-            totalTests++;
-            totalQuestions += resultTable[i].total;
-            totalCorrectQuestions += resultTable[i].correct;
-            totalSeconds += resultTable[i].time;
-        }
-    }
-}
-
-function viewQuizStats() {
-    for(var i = 0; i < quizNamesJson.length; i++) {
-        var quizId = quizNamesJson[i];
-        viewQuizStatsById(quizId);
-    }
-}
 
 function viewGlobalStats() {
     var statSolved = document.getElementById("stat-solved");
@@ -139,7 +96,7 @@ function showNoUsername() {
     var loginButton = document.getElementById("login-button") as HTMLButtonElement;
     var changePasswordButton = document.getElementById("change-password-button") as HTMLButtonElement;
 
-    usernameField.textContent = "Zaloguj się";
+    usernameField.textContent = "Zaloguj się, aby mieć dostęp do quizów";
     changePasswordButton.style.visibility = "hidden";
 }
 
@@ -165,10 +122,6 @@ async function main() {
     }
     
     viewQuizTable();
-    viewQuizStats();
-    if(totalTests > 0) {
-        viewGlobalStats();
-    }
 
     document.body.style.visibility = "visible";
 }

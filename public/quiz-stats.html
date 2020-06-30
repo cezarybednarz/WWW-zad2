@@ -1,0 +1,91 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>Statystyki quizu</title> 
+    <!-- Bulma Version 0.8.x-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"> 
+    <link rel='stylesheet' type='text/css' media='screen' href='stylesheets/main.css'>
+</head> 
+  
+<body> 
+    <!-- QUIZ CONTENT -->
+    <div class="container">
+        <div class="columns">
+            <!-- FIRST COLUMN -->
+            <div class="column is-6">
+                <section class="hero is-info welcome is-small">
+                    <div class="hero-body">
+                        <div class="container">
+                            <h1 class="title" id="quiz-name">
+                                Easy
+                            </h1>
+                            <h2 class="subtitle">
+                                Statystyki rozwiązanego quizu
+                            </h2>
+                            <h3 class="content" id="penalty-info">
+                                kara za niepoprawną odpowiedź: 4 s
+                            </h3>
+                        </div>
+                    </div>
+                </section>    
+                <div class="columns">
+                    <div class="column">
+                        <div class="card events-card" id="question-list">
+                            <!-- inserting table in script -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- SECOND COLUMN -->
+            <div class="column is-3">
+                <div class="tile is-ancestor">
+                    <div class="tile is-parent is-vertical">
+                        <article class="tile is-child notification is-success box">
+                            <p class="title" id="completed-tasks">0</p>
+                            <p class="subtitle">Twój wynik</p>
+                            <div class="field is-grouped">
+                                <p class="control">
+                                    <a href="index.html">
+                                    <button class="button is-warning" id="button-finish">
+                                        Powrót do menu
+                                    </button>
+                                    </a>
+                                </p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="tile is-ancestor">
+                    <div class="tile is-parent is-vertical" id="stats-table">
+                        <article class="tile is-child box">
+                            <p class="subtitle">Top 5 użytkowników</p>
+                            <p class="content">
+                                <table class="table">
+                                    <thead id="thead-${quizId}">
+                                        <tr>
+                                            <th></th>
+                                            <th>Wynik</th>
+                                            <th>User</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id='top-table'>
+                                        <!-- FILLING IN LOOP -->
+                                    </tbody>
+                                </table>
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SCRIPT -->
+    <script type="module" src="./dist/quiz-stats.js"></script>
+    <!-- END SCRIPT -->
+</body> 
+  
+</html> 

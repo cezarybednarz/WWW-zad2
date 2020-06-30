@@ -3,14 +3,19 @@ Internetowy quiz, aplikacja na przedmiot WWW.
 /server - backend 
 /public - aplikacja frontendowa
 
+Komendy należy wykonać w odpowiednim folderze (/server lub /public).
+
+
 komendy dla /server:
- - kompilacja: $npm run-script compile
- - tworzenie bazy: $npm run-script createdb
- - uruchomienie: $npm run-script run
- - testy: $npm run-script test
+ - instalacja: $npm install
+ - kompilacja: $npm run compile
+ - tworzenie bazy: $npm run createdb
+ - uruchomienie: $npm run run 
+ - testy: $npm run test 
 
 komendy dla /public:
- - kompilacja: $npm run-script compile  
+ - instalacja: $npm install
+ - kompilacja: $npm run compile  
 
 
 

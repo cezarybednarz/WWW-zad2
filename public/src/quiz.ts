@@ -1,6 +1,3 @@
-import jsonString from "./quizdata.js"
-import {putScoreInStorage} from "./database.js"
-import { time } from "console";
 
 function getQueryVariable(variable: string) {
     var query = window.location.search.substring(1);
@@ -133,7 +130,7 @@ function viewScore(quiz: string) {
             <td class="has-text-weight-medium">${i+1}</td>
             <td>${answers[i]}</td>
             <td>${correctAnswer}</td>
-            <td>${seconds[i] + " s"}</td>
+            <td id="time-${i+1}">${seconds[i] + " s"}</td>
             <td>${penalty}</td>
         </tr>
         `);
