@@ -22,6 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const csurf_1 = __importDefault(require("csurf"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
@@ -33,6 +34,7 @@ const connect_sqlite3_1 = __importDefault(require("connect-sqlite3"));
 const sqliteSession = connect_sqlite3_1.default(express_session_1.default);
 const csrfProtection = csurf_1.default({ cookie: true });
 const app = express_1.default();
+exports.app = app;
 const storage = new storage_1.Storage();
 const secret = "asdf";
 const router = express_1.default.Router();
@@ -140,8 +142,4 @@ app.post('/quiz_finished', (req, res) => {
     storage.addQuizAnswers(quiz_name, username, user_answers, user_time, penalty);
 });
 app.use(express_1.default.static('../public'));
-const server = app.listen(1500, () => {
-    console.log(`App is running at http://localhost:1500 in ${app.get('env')} mode`);
-    console.log('Press Ctrl+C to stop.');
-});
 //# sourceMappingURL=app.js.map
