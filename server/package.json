@@ -37,7 +37,7 @@
     "mocha": "^8.0.1",
     "mocha-webdriver": "^0.2.8",
     "process": "^0.11.10",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "selenium-webdriver": "^4.0.0-alpha.7",
     "shelljs": "^0.8.4",
     "sqlite3": "^4.2.0",
