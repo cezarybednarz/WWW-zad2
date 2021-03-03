@@ -25,7 +25,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "process": "^0.11.10",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "sqlite3": "^4.2.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
